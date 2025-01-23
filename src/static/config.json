@@ -1,0 +1,8 @@
+{
+    "global"               : {
+        "parametros"       : {
+            "file_path_rating" : "./src/data/books_rating.csv",
+            "file_path_data"   : "./src/data/books_data.csv"
+        }
+    }
+}
