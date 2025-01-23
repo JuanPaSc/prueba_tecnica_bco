@@ -2,17 +2,30 @@ import pandas as pd
 
 
 class ExploratoryAnalysis:
+    """
+    Clase para realizar análisis exploratorio en un conjunto de datos de libros y reseñas.
+
+    Attributes:
+        data (pd.DataFrame): DataFrame que contiene los datos a analizar.
+    """
     def __init__(self, data: pd.DataFrame):
         """
         Constructor para inicializar el DataFrame de análisis.
-        :param data: DataFrame que contiene los datos a analizar.
+
+        Args:
+            data (pd.DataFrame): DataFrame que contiene los datos a analizar.
         """
         self.data = data
 
     def average_ratings_by_book(self):
         """
         Calcula el promedio de valoraciones por libro.
-        :return: DataFrame con libros y sus valoraciones promedio.
+
+        Agrupa los datos por título del libro y calcula el promedio de las valoraciones.
+
+        Returns:
+            pd.DataFrame: DataFrame con las columnas `book_title` y `average_rating`.
+            Devuelve None si faltan las columnas necesarias.
         """
         if "book_title" in self.data.columns and "rating" in self.data.columns:
             avg_ratings = self.data.groupby("book_title")["rating"].mean().reset_index()
@@ -28,7 +41,10 @@ class ExploratoryAnalysis:
     def total_reviews_and_ratings(self):
         """
         Determina el número total de reseñas y valoraciones en el DataFrame.
-        :return: Diccionario con el número total de reseñas y valoraciones.
+
+        Returns:
+            dict: Diccionario con el total de reseñas (`total_reviews`) 
+            y el total de valoraciones (`total_ratings`).
         """
         total_reviews = self.data.shape[0]
         total_ratings = (
@@ -42,8 +58,14 @@ class ExploratoryAnalysis:
     def most_popular_authors(self, top_n=10):
         """
         Identifica los autores más populares basándose en la cantidad de libros o reseñas.
-        :param top_n: Número de autores populares a devolver.
-        :return: DataFrame con los autores más populares.
+
+        Args:
+            top_n (int, optional): Número de autores más populares a devolver. 
+                                   Por defecto es 10.
+
+        Returns:
+            pd.DataFrame: DataFrame con las columnas `author` y `count`, 
+                          ordenado por popularidad. Devuelve None si falta la columna `author`.
         """
         if "author" in self.data.columns:
             popular_authors = (
@@ -59,8 +81,14 @@ class ExploratoryAnalysis:
     def most_reviewed_categories(self, top_n=10):
         """
         Identifica los géneros o categorías más reseñados.
-        :param top_n: Número de categorías populares a devolver.
-        :return: DataFrame con las categorías más reseñadas.
+
+        Args:
+            top_n (int, optional): Número de categorías populares a devolver. 
+                                   Por defecto es 10.
+
+        Returns:
+            pd.DataFrame: DataFrame con las columnas `category` y `count`, 
+                          ordenado por popularidad. Devuelve None si falta la columna `category`.
         """
         if "category" in self.data.columns:
             popular_categories = (
@@ -72,34 +100,3 @@ class ExploratoryAnalysis:
         else:
             print("Error: La columna 'category' no se encuentra en los datos.")
             return None
-
-
-# # Ejemplo de uso
-# if __name__ == "__main__":
-#     # Simular carga de datos
-#     sample_data = {
-#         'book_title': ['Libro A', 'Libro B', 'Libro A', 'Libro C', 'Libro B'],
-#         'rating': [4, 5, 3, 4, 5],
-#         'author': ['Autor X', 'Autor Y', 'Autor X', 'Autor Z', 'Autor Y'],
-#         'category': ['Ficción', 'Ficción', 'Ficción', 'Ciencia', 'Ficción']
-#     }
-#     df = pd.DataFrame(sample_data)
-
-#     # Crear instancia del análisis
-#     analysis = ExploratoryAnalysis(df)
-
-#     # Calcular valoraciones promedio
-#     avg_ratings = analysis.average_ratings_by_book()
-#     print(avg_ratings)
-
-#     # Total de reseñas y valoraciones
-#     totals = analysis.total_reviews_and_ratings()
-#     print(totals)
-
-#     # Autores más populares
-#     popular_authors = analysis.most_popular_authors()
-#     print(popular_authors)
-
-#     # Categorías más reseñadas
-#     popular_categories = analysis.most_reviewed_categories()
-#     print(popular_categories)

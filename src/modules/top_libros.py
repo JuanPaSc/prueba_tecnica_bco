@@ -2,18 +2,31 @@ import pandas as pd
 
 
 class TopBooksAnalysis:
+    """
+    Clase para realizar análisis de libros top en base a reseñas, valoraciones y sentimientos.
+
+    Attributes:
+        data (pd.DataFrame): DataFrame que contiene los datos de análisis.
+    """
     def __init__(self, data: pd.DataFrame):
         """
         Constructor para inicializar el DataFrame de análisis.
-        :param data: DataFrame que contiene los datos a analizar.
+
+        Args:
+            data (pd.DataFrame): DataFrame que contiene los datos a analizar.
         """
         self.data = data
 
     def top_books_by_reviews(self, top_n=10):
         """
         Identifica los libros con mayor número de reseñas.
-        :param top_n: Número de libros a devolver.
-        :return: DataFrame con los libros más reseñados.
+
+        Args:
+            top_n (int): Número de libros a devolver. Por defecto, 10.
+
+        Returns:
+            pd.DataFrame: DataFrame con los títulos de los libros y el número de reseñas.
+                          Contiene dos columnas: 'book_title' y 'review_count'.
         """
         if "book_title" in self.data.columns:
             books_by_reviews = (
@@ -29,8 +42,13 @@ class TopBooksAnalysis:
     def top_books_by_average_rating(self, top_n=10):
         """
         Identifica los libros mejor valorados por promedio de puntaje.
-        :param top_n: Número de libros a devolver.
-        :return: DataFrame con los libros mejor valorados por promedio de puntaje.
+
+        Args:
+            top_n (int): Número de libros a devolver. Por defecto, 10.
+
+        Returns:
+            pd.DataFrame: DataFrame con los títulos de los libros y su promedio de puntaje.
+                          Contiene dos columnas: 'book_title' y 'average_rating'.
         """
         if "book_title" in self.data.columns and "rating" in self.data.columns:
             avg_rating = self.data.groupby("book_title")["rating"].mean().reset_index()
@@ -49,9 +67,14 @@ class TopBooksAnalysis:
     def top_books_by_sentiment(self, sentiment_data: pd.DataFrame, top_n=10):
         """
         Identifica los libros mejor valorados por promedio de sentimiento.
-        :param sentiment_data: DataFrame que contiene las columnas 'book_title' y 'sentiment'.
-        :param top_n: Número de libros a devolver.
-        :return: DataFrame con los libros mejor valorados por promedio de sentimiento.
+
+        Args:
+            sentiment_data (pd.DataFrame): DataFrame que contiene las columnas 'book_title' y 'sentiment'.
+            top_n (int): Número de libros a devolver. Por defecto, 10.
+
+        Returns:
+            pd.DataFrame: DataFrame con los títulos de los libros y su promedio de sentimiento.
+                          Contiene dos columnas: 'book_title' y 'average_sentiment'.
         """
         if (
             "book_title" in sentiment_data.columns
@@ -74,33 +97,3 @@ class TopBooksAnalysis:
             )
             return None
 
-
-# Ejemplo de uso
-if __name__ == "__main__":
-    # Simular carga de datos
-    sample_data = {
-        "book_title": ["Libro A", "Libro B", "Libro A", "Libro C", "Libro B"],
-        "rating": [4, 5, 3, 4, 5],
-    }
-    sentiment_data = {
-        "book_title": ["Libro A", "Libro B", "Libro A", "Libro C", "Libro B"],
-        "sentiment": [0.8, 0.9, 0.7, 0.85, 0.9],
-    }
-
-    df = pd.DataFrame(sample_data)
-    sentiment_df = pd.DataFrame(sentiment_data)
-
-    # Crear instancia del análisis
-    analysis = TopBooksAnalysis(df)
-
-    # Libros más reseñados
-    books_by_reviews = analysis.top_books_by_reviews()
-    print(books_by_reviews)
-
-    # Libros mejor valorados por puntaje
-    books_by_rating = analysis.top_books_by_average_rating()
-    print(books_by_rating)
-
-    # Libros mejor valorados por sentimiento
-    books_by_sentiment = analysis.top_books_by_sentiment(sentiment_df)
-    print(books_by_sentiment)

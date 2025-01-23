@@ -1,7 +1,7 @@
 """ Init module """
 
-from .analisis_exp import load_csv, clean_csv, detect_outliers
-from .analisis_NLP import average_ratings
-from .cargar_data import load_csv, clean_csv, detect_outliers
-from .top_libros import average_ratings
-from .visualizacion import average_ratings
+from .analisis_exp import ExploratoryAnalysis
+from .analisis_NLP import SentimentAnalysis
+from .cargar_data import cargar_data
+from .top_libros import TopBooksAnalysis
+from .visualizacion import DataVisualization
